@@ -1,0 +1,231 @@
+.Navbar {
+    background-image:linear-gradient(45deg,rgb(0,102,102),white);
+    
+}
+.Footer {
+ 
+    background-image:linear-gradient(rgb(0,102,102),white);
+    
+}
+
+
+ /*---------------Prathamesh circular cards on home page----------*/
+
+a{
+    text-decoration: none;
+    color: #000;
+
+}
+
+.speicality-img {
+    display: flex;
+   justify-content: space-around;
+   width: 120px; 
+   height: 90px; 
+   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); 
+   border-radius: 50%;
+   justify-content: center;
+   align-items: center; 
+ }
+
+ .specialities a {
+    text-decoration: none;
+    color: #000; /* Set the desired text color */
+    display: block;
+ }
+
+ .specialities p {
+    margin-top: 20px; /* Adjust the spacing between the image and the text */
+    justify-content: center;
+    align-items: center; 
+   
+    text-align: right;
+    padding-right: 22px;
+}
+
+
+ /*---------------Lalit medicine page cards----------*/
+
+  .CardTitle{
+    background-color:hsl(180, 100%, 97%);
+    
+  }
+  .CardBody{
+    background-color: hsl(180, 100%, 97%);
+  }
+  .CardText{
+    background-color:hsl(180, 100%, 97%);
+  
+  }
+
+
+  
+ /*---------------Akhilesh Signup page----------*/
+
+.loginBody{
+  background: hsla(186, 100%, 69%, 1);
+
+background: linear-gradient(45deg, hsla(186, 100%, 69%, 1) 0%, hsla(294, 100%, 55%, 1) 100%);
+
+background: -moz-linear-gradient(45deg, hsla(186, 100%, 69%, 1) 0%, hsla(294, 100%, 55%, 1) 100%);
+
+background: -webkit-linear-gradient(45deg, hsla(186, 100%, 69%, 1) 0%, hsla(294, 100%, 55%, 1) 100%);
+
+filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#60EFFF", endColorstr="#E81CFF", GradientType=1 );
+}
+
+.background-radial-gradient {
+    background-color: hsl(218, 41%, 15%);
+    background-image: radial-gradient(650px circle at 0% 0%,
+        hsl(218, 41%, 35%) 15%,
+        hsl(218, 41%, 30%) 35%,
+        hsl(218, 41%, 20%) 75%,
+        hsl(218, 41%, 19%) 80%,
+        transparent 100%),
+      radial-gradient(1250px circle at 100% 100%,
+        hsl(218, 41%, 45%) 15%,
+        hsl(218, 41%, 30%) 35%,
+        hsl(218, 41%, 20%) 75%,
+        hsl(218, 41%, 19%) 80%,
+        transparent 100%);
+  }
+  
+  #radius-shape-1 {
+    height: 220px;
+    width: 220px;
+    top: -60px;
+    left: -130px;
+    background: radial-gradient(#44006b, #ad1fff);
+    overflow: hidden;
+  }
+  
+  #radius-shape-2 {
+    border-radius: 38% 62% 63% 37% / 70% 33% 67% 30%;
+    bottom: -60px;
+    right: -110px;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(#44006b, #ad1fff);
+    overflow: hidden;
+  }
+  
+
+
+  /*---------------Jay cards below slider on home page----------*/
+
+  #cards{
+    margin-top: 30px;
+    margin-bottom: 30px;
+    
+  }
+  
+  #btnShow{
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-left: 40%;
+  }
+
+
+
+
+  .loginbutton{
+     background-color: rgb(0,102,102);
+     width:100px;
+  }
+
+
+  .RegistrationForm {
+    background-image: url('./Image/signup.png');
+    background-repeat: no-repeat;
+}
+
+.Login {
+  background-image: url(./Image/loginback.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+ 
+}
+
+.BookingForm{
+  background-image: url(./Image/appbg.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  color: white;
+}
+
+.DoctorEditForm{
+  background-image: url(./Image/editbg2.png);
+  background-repeat: no-repeat;
+  background-size:cover;
+  background-position:  center;
+  padding-left: 200px;
+}
+
+.PatientDashboard{
+  background-image: url(./Image/userDashBg.jpeg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  color: white;
+}
+
+.UpdatePatientProfile{
+  background-image: url(./Image/editpatientbg.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  
+}
+.DoctorDashboard{
+  background-image: url(./Image/doctordashbg.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  
+}
+
+
+/* ---------------------medicine Css------------ */
+
+.MedicineContainer{
+  
+  margin: 0;
+  
+  
+  align-items: center;
+  padding-bottom: 50px;
+  box-sizing: unset;
+
+}
+
+.MedicineCardRow{
+  margin-left: 200px;
+}
+
+.MedicineDiv{
+  align-items: center;
+  padding-top: 50px;
+  background-image: linear-gradient(45deg, aqua, black);
+}
+
+.Medi{
+  margin-left: 220px;
+  color: white;
+}
+
+.AccordMed{
+  padding-left: 100px;
+}
+/*-----------------------------------------------------------------------------------*/
+
+
+.EditForm{
+  background-image: url(./Image/editbg2.png);
+  background-repeat: no-repeat;
+  background-size:cover;
+  background-position:  center;
+  padding-left: 200px;
+}

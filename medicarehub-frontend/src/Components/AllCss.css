@@ -186,6 +186,13 @@ filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#60EFFF", en
   background-position: center;
   
 }
+.EditForm{
+  background-image: url(./Image/editbg2.png);
+  background-repeat: no-repeat;
+  background-size:cover;
+  background-position:  center;
+  padding-left: 200px;
+}
 
 
 /* ---------------------medicine Css------------ */
@@ -220,12 +227,3 @@ filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#60EFFF", en
   padding-left: 100px;
 }
 /*-----------------------------------------------------------------------------------*/
-
-
-.EditForm{
-  background-image: url(./Image/editbg2.png);
-  background-repeat: no-repeat;
-  background-size:cover;
-  background-position:  center;
-  padding-left: 200px;
-}

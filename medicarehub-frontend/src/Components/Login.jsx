@@ -6,6 +6,7 @@ import { doctorLogin } from "../Services/DoctorServices";
 import {Image} from "react-bootstrap";
 import login from "./Image/login.jpg";
 import { useUserContext } from "../Context/Context";
+import { adminLogin } from "../Services/AdminService";
 export function Login() {
   const navigate = useNavigate();
 
@@ -50,6 +51,42 @@ export function Login() {
 
         if(result.loginStatus){
           navigate("/");
+          
+        }
+        else{
+          setLoginError(true);
+
+          setTimeout(() => {
+            setLoginError(false);       //to vanish the message after 2 sec
+          }, 2000);
+        }
+      } 
+      catch (error) {
+        console.log(error);  
+        setLoginError(true);
+      }
+    }
+    else if(formData.login==='admin'){
+      console.log("admin");
+      try {
+        const result = await adminLogin(formData);
+        console.log(result.loginStatusMessage);
+        updateState({...result,userType:'admin',isLoggedIn:'true'});
+        console.log({...result,userType:'admin'});
+        localStorage.setItem("token", result.token);
+        
+        localStorage.setItem("loginId", result.loginId);
+        localStorage.setItem("loginStatus", result.loginStatus);
+        localStorage.setItem("loginName", result.loginName);
+        localStorage.setItem("loginEmail", result.loginEmail);
+        localStorage.setItem("loginPhone", result.loginPhone);
+        localStorage.setItem("loginGender", result.loginGender);
+        localStorage.setItem("loginCity", result.loginCity);
+        localStorage.setItem("userType",'admin')
+        localStorage.setItem("isLoggedIn",'true')
+
+        if(result.loginStatus){
+          navigate("/");
         }
         else{
           setLoginError(true);
@@ -65,12 +102,12 @@ export function Login() {
       }
     }
     else {
-      console.log("doctor");
+      console.log("doctor",);
       try {
         const result = await doctorLogin(formData);
         console.log(result.loginStatusMessage);
         updateState({...result,userType:'doctor',isLoggedIn:'true'});
-
+        console.log({...result,userType:'doctor'});
         localStorage.setItem("loginId", result.loginId);
         localStorage.setItem("loginStatus", result.loginStatus);
         localStorage.setItem("loginName", result.loginName);
@@ -115,6 +152,7 @@ export function Login() {
               <Row>
                 <Col lg={3}><Form.Check type="radio" label="Patient" name="login" value="patient" checked={formData.login === 'patient'} onChange={handleChange} required /></Col>
                 <Col lg={3}><Form.Check type="radio" label="Doctor" name="login" value="doctor" checked={formData.login === 'doctor'} onChange={handleChange} required /></Col>
+                <Col lg={3}><Form.Check type="radio" label="Admin" name="login" value="admin" checked={formData.login === 'admin'} onChange={handleChange} required /></Col>
               </Row>
             </Form.Group>
 

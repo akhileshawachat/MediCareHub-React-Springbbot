@@ -11,8 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AppointmentService {
@@ -70,6 +73,7 @@ public class AppointmentService {
             appointment.setSymptoms(updatedAppointment.getSymptoms());
             appointment.setWeight(updatedAppointment.getWeight());
             appointment.setHeight(updatedAppointment.getHeight());
+            appointment.setPrescription(updatedAppointment.getPrescription());
 
             return appointmentRepository.save(appointment);
         } else {
@@ -87,5 +91,48 @@ public class AppointmentService {
  
             return false;
         }
+       
    }
+    
+    public List<String> getTimeSlotByDoctorAndDate(Appointment appointment) {
+
+        List<Appointment> list = appointmentRepository.findTimeSlotByDoctorAndDate(appointment.getDoctor().getId(), appointment.getAppdate());
+        List<String> timeToSend = new ArrayList<>();
+
+        if (list.isEmpty()) {
+            // If no appointments found, assume all time slots are available
+            return Arrays.asList("9:00 AM", "11:00 AM", "12:00 PM", "1:00 PM");
+        } else {
+            // Extract time slots from the list of appointments
+            List<String> existingTimeSlots = list.stream()
+                    .map(Appointment::getApptime)
+                    .collect(Collectors.toList());
+
+            // Check and add missing time slots
+            addIfMissing(existingTimeSlots, "9:00 AM", timeToSend);
+            addIfMissing(existingTimeSlots, "11:00 AM", timeToSend);
+            addIfMissing(existingTimeSlots, "12:00 PM", timeToSend);
+            addIfMissing(existingTimeSlots, "1:00 PM", timeToSend);
+
+            return timeToSend;
+        }}
+
+    private void addIfMissing(List<String> existingTimeSlots, String timeSlot, List<String> timeToSend) {
+        if (!existingTimeSlots.contains(timeSlot)) {
+            timeToSend.add(timeSlot);
+        }
+    }
+
+    
+    
+    public List<Appointment> getMedicalHistoryByPatientId(int patientId) {
+		List<Appointment> list = appointmentRepository.getAppointmentsByPatientId(patientId);
+        if ( list.isEmpty()) {
+            throw new AppointmentServiceException("No patient Medical History found!!!: ");
+        } else {
+            return list;
+        }
+    }
+    
+    
 }

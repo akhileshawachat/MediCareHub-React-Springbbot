@@ -8,7 +8,14 @@ public class LoginStatus {
 	private String loginEmail;
 	private String loginGender;
 	private String loginCity;
+	private String token;
 	
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
+	}
 	private boolean loginStatus;
 	private String loginStatusMessage;
 	

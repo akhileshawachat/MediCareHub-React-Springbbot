@@ -1,12 +1,18 @@
 import { Container} from "react-bootstrap";
 import Accordion from 'react-bootstrap/Accordion';
 import Filter from "./Filter";
+import MyComponent from './GoogleMaps';
+
 
 export function Hospitals(){
     return (
         <div>
             <Container>
             <Filter></Filter>
+            <h1>Find the best hospital near you</h1>
+            <br></br>
+            <MyComponent></MyComponent>
+            
             <div id='accord'>
             <h2 id='faq'>Frequently Asked Questions (FAQ)</h2>
                 <Accordion defaultActiveKey={['0']} alwaysOpen>

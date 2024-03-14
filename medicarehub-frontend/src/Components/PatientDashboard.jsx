@@ -1,11 +1,12 @@
 import { useUserContext } from "../Context/Context";
-import { getAppointmentsByPatientId } from "../Services/PatientServices";
+import { downloadPrescription, getAppointmentsByPatientId } from "../Services/PatientServices";
 import { deleteAppointment } from "../Services/DoctorServices";
 import { Button, Container, Table, Modal ,Row, Card, ListGroup, ListGroupItem, Col} from "react-bootstrap";
 import profilepic from "./Image/profilepic.jpg";
 import { useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export function PatientDashboard() {
 
@@ -16,7 +17,7 @@ export function PatientDashboard() {
     const navigate = useNavigate();
 
     const {userState, updateState} =useUserContext();
-    let doctorId = userState.loginId;
+    let patientId = userState.loginId;
 
     //---------------------------------------------to open the delete confirmation modal-------------------------------------------------------------------
 
@@ -38,7 +39,7 @@ export function PatientDashboard() {
     const handleDeleteClick = async () => {
         console.log(appId);
         try {
-            const response = await deleteAppointment(appId);
+            const response = await deleteAppointment(appId,userState.token);
             console.log(response);
             await populateAppointmentsState();
             closeModalDialog();
@@ -59,7 +60,7 @@ export function PatientDashboard() {
 
     async function populateAppointmentsState() {
         try {
-            const data = await getAppointmentsByPatientId(userState.loginId);
+            const data = await getAppointmentsByPatientId(userState.loginId,userState.token);
             console.log(data);
            
             setAppointments(data);
@@ -67,6 +68,45 @@ export function PatientDashboard() {
             console.log(error);
         }
     }
+    const getPrescription = async () => {
+        if (!patientId) {
+            return "Patient ID is required";
+        }
+    
+        try {
+            let headers = {
+                'Authorization': `Bearer ${userState.token}`,
+                'Content-Type': 'application/json'
+            };
+    
+            const response = await axios.get(
+                `http://localhost:9090/downloadPrescription/${patientId}`,
+                {
+                    headers,
+                    responseType: "blob",
+                }
+            );
+    
+            const blob = new Blob([response.data], { type: response.headers['content-type'] });
+    
+            // Create a download link
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", "medical_history.pdf");
+    
+            // Append the link to the document and trigger the click event
+            document.body.appendChild(link);
+            link.click();
+    
+            // Clean up by removing the link and revoking the object URL
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error("Error downloading medical history:", error.message);
+        }
+    };
+    
 
     console.log(appointments)
 
@@ -139,6 +179,9 @@ export function PatientDashboard() {
                     </tbody>
                 </Table> : <h2>No Registration Found</h2>}
 
+                <Button size="lg" onClick={getPrescription}>Download Prescription</Button>
+
+
             <Modal show={showDialog} onHide={closeModalDialog}>
                 <Modal.Header closeButton>
                     <Modal.Title>Confirmation</Modal.Title>
@@ -156,6 +199,7 @@ export function PatientDashboard() {
                 </Modal.Footer>
             </Modal>
             </Col></Row>
+            
         </Container>
     );
 }

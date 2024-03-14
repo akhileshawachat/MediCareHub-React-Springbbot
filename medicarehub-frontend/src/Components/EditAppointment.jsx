@@ -1,5 +1,3 @@
- 
-
  import { Alert, Button, Col, Container, Form, Row} from "react-bootstrap";
  import Accordion from 'react-bootstrap/Accordion';
  import Filter from "./Filter";
@@ -7,6 +5,7 @@ import { useEffect, useState } from "react";
 import { getAllDoctors ,updateAppointmentsByAppIdAndDocId} from "../Services/DoctorServices";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useUserContext } from "../Context/Context";
+import { emailSender } from "../Services/EmailService";
 
 
 
@@ -19,19 +18,28 @@ import { useUserContext } from "../Context/Context";
 console.log(state)
 const navigate = useNavigate();
 
+const [emailData, setEmailData] = useState({
+    to: '',
+    subject:'Updated Doctors Appointment',
+    message:'Your Appointment has been rescheduled, kindly visit the website for more Information'
+});
+
 const {userState, updateState} =useUserContext();
 
     const { id } = useParams();
 
     console.log(id)
 
+
+
+
     useEffect(() => {
+        setEmailData({ ...emailData, to: state?.appointmentData.patient.email});
         try {
 
-
-
+            
             async function fetchData() {
-                let response = await getAllDoctors();
+                let response = await getAllDoctors(userState.token);
                 setDoctorList(response);
 
                 // let appointmentResponse = await getAppointmentById(id);
@@ -52,8 +60,25 @@ const {userState, updateState} =useUserContext();
     const handleChange = (e) => {
         
         setFormData({ ...formData, [e.target.name]: e.target.value });
+        if (e.target.name === 'appdate') {
+            // Get today's date
+            const today = new Date();
+            // Get the selected date from the input
+            const selectedDate = new Date(e.target.value);
+            // Compare selected date with today's date
+            if (selectedDate < today) {
+                // If selected date is in the past, set it to today's date
+                setFormData({ ...formData, [e.target.name]: today.toISOString().split('T')[0] });
+            } else {
+                // If selected date is valid, update the form data
+                setFormData({ ...formData, [e.target.name]: e.target.value });
+            }
+        } else {
+            // For other fields, update the form data normally
+            setFormData({ ...formData, [e.target.name]: e.target.value });
+        }
     };
-
+    console.log(formData);
     const handleSubmit = async (e) => {
 
          e.preventDefault();
@@ -63,10 +88,12 @@ const {userState, updateState} =useUserContext();
             
              let data ={...formData, doctorId: userState.loginId.toString()};
              console.log(userState.loginId);
+            
 
-              const result = await updateAppointmentsByAppIdAndDocId(userState.loginId,formData);
+              const result = await updateAppointmentsByAppIdAndDocId(userState.loginId,formData,userState.token);
             setIsSubmitted(true);
 
+            const emailStatus=emailSender(emailData);
 
              setTimeout(() => {
                  setIsSubmitted(false)       //to vanish the registered successful message after 2 sec

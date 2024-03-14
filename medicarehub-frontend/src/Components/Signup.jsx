@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Container, Form, Button, Row, Col, Alert } from 'react-bootstrap';
 import { savePatient } from '../Services/PatientServices';
 import './AllCss.css';
+import { useNavigate } from 'react-router-dom';
+import { emailSender } from '../Services/EmailService';
 export function Signup  ()  {
 
 
@@ -17,11 +19,37 @@ export function Signup  ()  {
         
     });
 
+    const [emailData, setEmailData] = useState({
+        to: '',
+        subject:'Welcome to MedicareHub!',
+        message:'You have Registered Successfully'
+    });
+    
+    const navigate = useNavigate();
+
     // to print inserted sucessful or not message on page
     const [isSubmitted, setIsSubmitted] = useState(false);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+        setEmailData({ ...emailData, to: e.target.name === 'email' ? e.target.value : emailData.to });
+        if (e.target.name === 'dateOfBirth') {
+            // Get today's date
+            const today = new Date();
+            // Get the selected date from the input
+            const selectedDate = new Date(e.target.value);
+            // Compare selected date with today's date
+            if (selectedDate > today) {
+                // If selected date is in the future, set it to today's date
+                setFormData({ ...formData, [e.target.name]: today.toISOString().split('T')[0] });
+            } else {
+                // If selected date is valid, update the form data
+                setFormData({ ...formData, [e.target.name]: e.target.value });
+            }
+        } else {
+            // For other fields, update the form data normally
+            setFormData({ ...formData, [e.target.name]: e.target.value });
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -35,7 +63,8 @@ export function Signup  ()  {
 
             if(result.status){
             setIsSubmitted(true);
-
+            const emailStatus= await emailSender(emailData);
+            navigate("/login");
             setTimeout(() => {
                 setIsSubmitted(false)       //to vanish the registered successful message after 2 sec
             }, 2000);

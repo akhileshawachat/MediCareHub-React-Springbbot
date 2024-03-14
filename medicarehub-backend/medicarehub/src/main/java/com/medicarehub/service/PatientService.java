@@ -1,9 +1,14 @@
 package com.medicarehub.service;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +19,9 @@ import com.medicarehub.exception.PatientServiceException;
 import com.medicarehub.repository.AppointmentRepository;
 import com.medicarehub.repository.PatientRepository;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+
 @Service
 public class PatientService {
 	
@@ -23,11 +31,20 @@ public class PatientService {
 	@Autowired
 	private AppointmentRepository appointmentRepository;
 	
+	
+	private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	
+	
+
 	public int register(Patient patient) {
 	
-		Optional<Patient> patientCheck = patientRepository.findByPhone(patient.getPhone());
+		Optional<Patient> patientCheck = patientRepository.findByEmail(patient.getEmail());
 		
 		if(patientCheck.isEmpty()) {
+			String password = patient.getPassword();
+			String encodedPassword = passwordEncoder.encode(password);
+			patient.setPassword(encodedPassword);
+
 			Patient savedPatient = patientRepository.save(patient);
 			return savedPatient.getId();
 		}
@@ -39,15 +56,16 @@ public class PatientService {
 	
 	
 	public Patient login(Patient patient) {
-	    Optional<Patient> patientCheck = patientRepository.findByPhone(patient.getPhone());
+	    Optional<Patient> patientCheck = patientRepository.findByEmail(patient.getEmail());
 
 	    if (patientCheck.isEmpty()) {
 	        throw new PatientServiceException("Patient doesn't exist");
 	    } else {
 	        Patient existingPatient = patientCheck.get();
-	        if (patient.getPassword().equals(existingPatient.getPassword()) && patient.getEmail().equals(existingPatient.getEmail())) {
-	            return existingPatient;
+	        if((passwordEncoder.matches(patient.getPassword(), existingPatient.getPassword())) && (patient.getEmail().equals(existingPatient.getEmail()))) {
+	       	  return existingPatient;
 	        }
+	        
 	    }
 
 	    throw new PatientServiceException("Incorrect email or password");

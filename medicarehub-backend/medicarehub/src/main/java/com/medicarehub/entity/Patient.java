@@ -4,7 +4,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -14,25 +16,46 @@ import jakarta.persistence.Id;
 
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+@Valid
 @Entity
 @Table
 public class Patient {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="patientId")
-	private int id;
-	private String name;
-	private String phone;
-	private String email;
-	private String gender;
-	private String city;
-	private LocalDate dateOfBirth;
-	private String password;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "patientId")
+    private int id;
+
+    @NotBlank
+    private String name;
+
+    @Column(length = 10, nullable = false)
+    @Pattern(regexp = "(^[0-9]{10}$)", message = "Invalid Mobile Number!")
+    private String phone;
+
+    @Email(message = "Email should be Proper")
+    @NotBlank
+    private String email;
+
+    private String gender;
+
+    @NotBlank
+    private String city;
+
+    private LocalDate dateOfBirth;
+
+    @Column(name = "password", length = 300, nullable = false)
+    @Size(min = 8, message = "Password should have at least 8 characters")
+    private String password;
 	
 	
-	@OneToMany(mappedBy="patient", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="patient", fetch=FetchType.EAGER, cascade = CascadeType.REMOVE)
 	@JsonBackReference
 	public List<Appointment> appointments;
 	

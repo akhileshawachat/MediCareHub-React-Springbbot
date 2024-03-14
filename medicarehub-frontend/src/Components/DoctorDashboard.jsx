@@ -5,6 +5,7 @@ import profilepic from "./Image/Doctorimg.jpeg";
 import { useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
+import { emailSender } from "../Services/EmailService";
 
 export function DoctorDashboard() {
 
@@ -12,6 +13,12 @@ export function DoctorDashboard() {
 
     const [appointments, setAppointments] = useState([]);
 
+    const [emailData, setEmailData] = useState({
+        to: '',
+        subject:'Doctors Appointment Status!',
+        message:'Your Appointment has been canceled'
+    });
+    
     const navigate = useNavigate();
 
     const {userState, updateState} =useUserContext();
@@ -37,8 +44,9 @@ export function DoctorDashboard() {
     const handleDeleteClick = async () => {
         console.log(appId);
         try {
-            const response = await deleteAppointment(appId);
+            const response = await deleteAppointment(appId,userState.token);
             console.log(response);
+            const emailStatus= await emailSender(emailData);
             await populateAppointmentsState();
             closeModalDialog();
         } catch (error) {
@@ -58,7 +66,7 @@ export function DoctorDashboard() {
 
     async function populateAppointmentsState() {
         try {
-            const data = await getAppointmentsByDoctorId(userState.loginId);
+            const data = await getAppointmentsByDoctorId(userState.loginId,userState.token);
             console.log(data);
            
             setAppointments(data);
@@ -100,7 +108,8 @@ export function DoctorDashboard() {
                 <Table className=" mt-4" >
                     <thead className="border-dark">
                         <tr >
-                            
+                        <th>Patient Name</th>   
+                        <th>Patient Email</th>   
                         <th> Appointment date</th>
                         <th> Appointment Time</th>
                         <th> Symptoms</th>
@@ -108,6 +117,8 @@ export function DoctorDashboard() {
                             <th>Weight</th>
                             <th>Reject</th>
                             <th>Update</th>
+                            <th>Add Prescription</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -115,6 +126,9 @@ export function DoctorDashboard() {
                             appointments.map((s,i) => {
                                 return (
                                     <tr key={i}>
+
+                                        <td>{s.patient.name}</td>
+                                        <td>{s.patient.email}</td>
                                         <td>{s.appdate}</td>
                                         <td>{s.apptime}</td>
                                         <td>{s.symptoms}</td>
@@ -124,6 +138,8 @@ export function DoctorDashboard() {
                                             <Button className="me-5" variant="danger" onClick={() => {
                                                 openModalDialog();
                                                 setSelectedAppId(s.id);
+                                                setEmailData({...emailData, to: s.patient.email});
+                                                
                                             }}>Reject Appointment</Button>
                                             </td>
                                             <td>
@@ -132,6 +148,10 @@ export function DoctorDashboard() {
                                                navigate(`/edit/${s.id}`, { state: { appointmentData: s } });
                                             }}>Update Appointment</Button>
                                         </td>
+                                        <td><Button variant="warning" onClick={() => {
+                                                
+                                        navigate(`/prescriptionForm/${s.id}`, { state: { appointmentData: s } });
+                                            }}>Add</Button></td>
                                     </tr>
                                 )
                             })

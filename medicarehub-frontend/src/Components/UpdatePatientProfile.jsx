@@ -29,7 +29,7 @@ export function UpdatePatientProfile () {
             let data ={...formData, paitentId: userState.loginId.toString()};
             console.log(userState.loginId);
 
-             const result = await updateProfile(data);
+             const result = await updateProfile(data,userState.token);
            setIsSubmitted(true);
 
 
@@ -45,7 +45,7 @@ export function UpdatePatientProfile () {
    };
    const populatePatientState = async () => {
     try {
-        const result = await fetchPatientById(userState.loginId);
+        const result = await fetchPatientById(userState.loginId,userState.token);
         setFormData(result);
     } catch (error) {
         console.log(error);

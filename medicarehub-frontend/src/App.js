@@ -18,16 +18,23 @@ import { Ortho } from './Components/Ortho.jsx';
 import { Urology } from './Components/Urology.jsx';
 
 import { BookingForm } from './Components/BookingForm.jsx';
-import { UserContextProvider, useUserContext } from './Context/Context.js';
+import { useUserContext } from './Context/Context.js';
 import { DoctorDashboard } from './Components/DoctorDashboard.jsx';
 import EditAppointment from './Components/EditAppointment.jsx';
 import EditPatientAppointment from './Components/EditPatientAppointment.jsx';
 import { useEffect } from 'react';
 import { PatientDashboard } from './Components/PatientDashboard.jsx';
 import { UpdatePatientProfile } from './Components/UpdatePatientProfile.jsx';
+import { AdminDashboard } from './Components/AdminDashboard.jsx';
+import MyComponent from './Components/GoogleMaps.jsx';
+import { PrescriptionForm } from './Components/PrescriptionForm.jsx';
+import { PaymentGateway } from './Components/PyamentForm.jsx';
+
+
 
 function App() {
   const {userState, updateState} =useUserContext();
+  // const navigate = useNavigate();
   useEffect(()=>{
     let loginId = localStorage.getItem("loginId");
     let loginStatus = localStorage.getItem("loginStatus");
@@ -38,9 +45,13 @@ function App() {
     let loginCity =localStorage.getItem("loginCity");
     let userType = localStorage.getItem("userType");
     let isLoggedIn =localStorage.getItem("isLoggedIn");
+    let token =localStorage.getItem("token");
+    // if(!isLoggedIn || !token){
+    //   navigate("/login");
+    // }
    
     updateState({
-      loginId,loginStatus,loginName,loginEmail,loginPhone,loginGender,loginCity,userType,isLoggedIn
+      loginId,loginStatus,loginName,loginEmail,loginPhone,loginGender,loginCity,userType,isLoggedIn,token
     })
 
   },[])
@@ -64,10 +75,13 @@ function App() {
       <Route path="/bookingForm" element={<BookingForm/>}></Route>
       <Route path="/doctorDashBoard" element={<DoctorDashboard/>}></Route>
       <Route path="/patientDashBoard" element={<PatientDashboard/>}></Route>
+      <Route path="/adminDashBoard" element={<AdminDashboard/>}></Route>
       <Route path="/edit/:id" element={<EditAppointment/>} />
       <Route path="/editPatient/:id" element={<EditPatientAppointment/>} />
       <Route path="/updatePatient" element={<UpdatePatientProfile/>} />
-      
+      <Route path="/mycomponent" element={<MyComponent/>}></Route>
+      <Route path="/prescriptionForm/:id" element={<PrescriptionForm/>}></Route>
+      <Route path="/paymentGateway" element={<PaymentGateway/>}></Route>
         
     </Routes>
     <Footer></Footer>

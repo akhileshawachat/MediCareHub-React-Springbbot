@@ -1,5 +1,6 @@
 package com.medicarehub.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,5 +25,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
 	 
 	 @Query("SELECT a FROM Appointment a WHERE a.patient.id = :patientId and a.id= :appointId")
 	 Optional<Appointment> findByPatientIdAndAppointmentId(@Param("patientId") int patientId,@Param("appointId") int appointId);
-		 
+	 
+	 
+	 @Query("SELECT a FROM Appointment a WHERE a.doctor.id = :doctorId and a.appdate = :appdate")
+	 List<Appointment> findTimeSlotByDoctorAndDate(@Param("doctorId") int doctorId, @Param("appdate") LocalDate appdate);
+
+
 }

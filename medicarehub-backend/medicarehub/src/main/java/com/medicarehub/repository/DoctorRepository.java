@@ -10,6 +10,7 @@ import com.medicarehub.entity.Doctor;
 public interface DoctorRepository extends JpaRepository<Doctor, Integer>{
 	
 	public Optional<Doctor> findByPhone(String phone);
+	public Optional<Doctor> findByEmail(String email);
 //	public Optional<Doctor> findById(int id);
 	
 

@@ -12,6 +12,7 @@ import { Clinispecial } from "./Clinispecial";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../Context/Context";
 export function Home() {
+    
     const carouselItemStyle = {
         height: "600px", // Adjust the height as needed
 
@@ -74,7 +75,7 @@ export function Home() {
 
 
                         {userState.isLoggedIn === 'true' ? <>
-                            <Button variant="primary" onClick={() => { navigate("/bookingForm") }}  style={{position :'absolute',top:'70%', left : '15%',blockSize: '10%', width:'120px', fontSize: '20px'}}>Book Now</Button>
+                            <Button variant="primary" onClick={() => { navigate("/paymentGateway") }}  style={{position :'absolute',top:'70%', left : '15%',blockSize: '10%', width:'120px', fontSize: '20px'}}>Book Now</Button>
                         </> : <>
                             <Button variant="primary" onClick={() => { navigate("/login") }} style={{position :'absolute',top:'70%', left : '15%',blockSize: '10%', width:'120px', fontSize: '20px'}}>Book Now</Button>
                         </>}

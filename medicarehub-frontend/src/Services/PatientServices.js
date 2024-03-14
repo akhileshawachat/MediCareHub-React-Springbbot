@@ -29,9 +29,13 @@ export async function savePatient(patientData){
 
 //----------------------------------------------------------to fetch patient by patientId-------------------------------------
 
-export async function fetchPatientById(patientId){
+export async function fetchPatientById(patientId,token){
     try {
-        const response = await axios.get(`${url}/fetchPatientById/${patientId}`);
+        let headers = {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        const response = await axios.get(`${url}/fetchPatientById/${patientId}`,{headers});
         return response.data;
      } catch (error) {
          console.log(error);
@@ -41,9 +45,14 @@ export async function fetchPatientById(patientId){
 
 //---------------------------------------------------------to update Patient data by patientId--------------------------------
 
-export async function updateProfile(updatedData){
+export async function updateProfile(updatedData,token){
+
     try {
-        const response = await axios.put(`${url}/updateByPatient`,updatedData);
+        let headers = {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        const response = await axios.put(`${url}/updateByPatient`,updatedData,{headers});
         return response.data;
      } catch (error) {
          console.log(error);
@@ -60,11 +69,15 @@ export async function patientLogin(credentials){
 
 //----------------------------------------------------to save appointment-------------------------------------------
 
-export async function bookAppointment(appData){
+export async function bookAppointment(appData,token){
    
     try {
+        let headers = {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
         console.log('appdata',appData)
-        const response=await axios.post(url+"/bookAppointment?patientId="+appData.patientId+"&doctorId="+appData.doctorId,appData);
+        const response=await axios.post(url+"/bookAppointment?patientId="+appData.patientId+"&doctorId="+appData.doctorId,appData,{headers});
         
         return response.data;
     } catch (error) {
@@ -75,10 +88,13 @@ export async function bookAppointment(appData){
 
 //-----------------------------------------------------------------------get appointments by patientId---------------------------
 
- export async function getAppointmentsByPatientId(patientId){
-
+ export async function getAppointmentsByPatientId(patientId,token){
+    let headers = {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
     
-    const response = await axios.get(`${url}/getAppointmentsByPatientId/${patientId}`);
+    const response = await axios.get(`${url}/getAppointmentsByPatientId/${patientId}`,{headers});
     
     return response.data;
 }
@@ -102,10 +118,23 @@ export async function bookAppointment(appData){
 
 //-----------------------------------------------------------------------to update appointment by appointmentId and doctorId---------------------------
 
-export async function updateAppointmentsByAppIdAndPatId(patientId,credentials){
-
+export async function updateAppointmentsByAppIdAndPatId(patientId,credentials,token){
+    let headers = {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
     
-    const response = await axios.put(`${url}/updateByPatient/${patientId}`,credentials);
+    const response = await axios.put(`${url}/updateByPatient/${patientId}`,credentials,{headers});
     
     return response.data;
 }
+
+
+
+
+
+
+
+
+
+

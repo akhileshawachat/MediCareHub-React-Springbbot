@@ -16,7 +16,8 @@ export function NavigationBar(){
     localStorage.setItem("loginPhone", "");
     localStorage.setItem("loginGender", "");
     localStorage.setItem("loginCity", "");
-    localStorage.setItem("userType",'')
+    localStorage.setItem("userType",'');
+    localStorage.setItem("token",'');
     localStorage.setItem("isLoggedIn",'false');
     updateState({})
     navigate('/')
@@ -77,12 +78,16 @@ export function NavigationBar(){
               </LinkContainer>
               
               {userState.userType === 'doctor' ?
-              <LinkContainer to="/DoctorDashboard">
-              <Button variant="dark" className="me-3">User</Button>
-              </LinkContainer>
-              :  <LinkContainer to="/PatientDashboard">
-              <Button variant="dark" className="me-3">User</Button>
-              </LinkContainer>
+                  <LinkContainer to="/DoctorDashboard">
+                  <Button variant="dark" className="me-3">User</Button>
+                  </LinkContainer>
+              :  (userState.userType === 'patient' ?
+                        <LinkContainer to="/PatientDashboard">
+                        <Button variant="dark" className="me-3">User</Button>
+                        </LinkContainer>
+                        : <LinkContainer to="/AdminDashboard">
+                          <Button variant="dark" className="me-3">User</Button>
+                          </LinkContainer>)
               }
               </>
             ): (

@@ -1,0 +1,28 @@
+1. main me jana : git checkout main
+2. main ko pull : git pull
+3. cresate new branmch : git branch branch-ka-name
+4. swtich to that branch : git checkout branch-ka-name
+5. do your changes.
+6. add changes to staging area : git add .
+7. Commit your chages: git commit -m"meaages of commti"   // local repository me code hai
+8. put change to remote reposity : git push
+9. from github browser : create pull request : jo new changes add kiye ho , usko main branch me dalna hai.
+10. From github browser: approve pull  request   -> merge main se  ,
+
+ 
+
+***** Sitation: New branch got created by vedant and that pull request got create and merge****
+
+baki sare bandko ke pass purana code rahenge.
+        branch-ka-name me adhe changes hai, hum is update karne ke baad complete karenge,
+        1. git add .
+        2. Commit you changes: local repository me save ho jaenga.   git commit -m"WOrking on my task"
+        3. git checkout main
+        3. git pull : vedant ne jo code dala tha , wo main branch me aa gaya.
+        4. wapas mere branch me jaunga: git checkout branch-ka-name 
+        5. merge is main: git merge main  : both updated code and the changes done by you will be visilbe in your branch (branch ka name)  
+                        - issues: merge conflict:
+                                 same file : same line
+        6. git add .
+        7. git commit -m"New message"
+        8. git push ,git branch --set-upstream-to <remote-branch>
